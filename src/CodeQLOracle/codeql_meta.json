@@ -1,0 +1,210 @@
+[   
+    {
+        "name": "'import *' may pollute namespace",
+        "codeql_query": "Imports/UnintentionalImport.ql"
+    },
+    {
+        "name": "An assert statement has a side-effect",
+        "codeql_query": "Statements/SideEffectInAssert.ql"
+    },
+    {
+        "name": "Comparison of constants",
+        "codeql_query": "Expressions/CompareConstants.ql"
+    },
+    {
+        "name": "Comparison of identical values",
+        "codeql_query": " Expressions/CompareIdenticalValues.ql"
+    },
+    {
+        "name": "Comparison using is when operands support `__eq__`",
+        "codeql_query": "Expressions/IncorrectComparisonUsingIs.ql"
+    },
+    {
+        "name": "Conflicting attributes in base classes",
+        "codeql_query": "Classes/ConflictingAttributesInBaseClasses.ql"
+    },
+    {
+        "name": "Constant in conditional expression or statement",
+       "codeql_query": "Statements/ConstantInConditional.ql"
+    },
+    {
+        "name": "Deprecated slice method",
+        "codeql_query": "Functions/DeprecatedSliceMethod.ql"
+    },
+    {
+        "name": "Duplicate key in dict literal",
+        "codeql_query": "Expressions/DuplicateKeyInDictionaryLiteral.ql"
+    },
+    {
+        "name": "Except block handles 'BaseException'",
+        "codeql_query": "Exceptions/CatchingBaseException.ql"
+    },
+    {
+        "name": "First argument to super() is not enclosing class",
+        "codeql_query": "Expressions/CallToSuperWrongClass.ql"
+    },
+    {
+        "name": "First parameter of a method is not named 'self'",
+        "codeql_query": "Functions/NonSelf.ql"
+    },
+    {
+        "name": "Flask app is run in debug mode",
+        "codeql_query": "Security/CWE-215/FlaskDebug.ql"
+    },
+    {
+        "name": "Illegal raise",
+        "codeql_query": "Exceptions/IllegalRaise.ql"
+    },
+    {
+        "name": "Implicit string concatenation in a list",
+        "codeql_query": "Expressions/UnintentionalImplicitStringConcatenation.ql"
+    },
+    {
+        "name": "Import of deprecated module",
+        "codeql_query": "Imports/DeprecatedModule.ql"
+    },
+    {
+        "name": "Imprecise assert",
+        "codeql_query": "Testing/ImpreciseAssert.ql"
+    },
+    {
+        "name": "Incomplete URL substring sanitization",
+        "codeql_query": "Security/CWE-020/IncompleteUrlSubstringSanitization.ql"
+    },
+    {
+        "name": "Incomplete ordering",
+        "codeql_query": "Classes/IncompleteOrdering.ql"
+    },
+    {
+        "name": "Inconsistent equality and hashing",
+        "codeql_query": "Classes/EqualsOrHash.ql"
+    },
+    {
+        "name": "Insecure temporary file",
+        "codeql_query": "Security/CWE-377/InsecureTemporaryFile.ql"
+    },
+    {
+        "name": "Missing call to `__init__` during object initialization",
+        "codeql_query": "Classes/MissingCallToInit.ql"
+    },
+    {
+        "name": "Modification of dictionary returned by locals()",
+        "codeql_query": "Statements/ModificationOfLocals.ql"
+    },
+    {
+        "name": "Modification of parameter with default",
+        "codeql_query": "Functions/ModificationOfParameterWithDefault.ql"
+    },
+    {
+        "name": "Module is imported more than once",
+        "codeql_query": "Imports/MultipleImports.ql"
+    },
+    {
+        "name": "Module is imported with 'import' and 'import from'",
+        "codeql_query": "Imports/ImportandImportFrom.ql"
+    },
+    {
+        "name": "Nested loops with same variable",
+        "codeql_query": "Statements/NestedLoopsSameVariable.ql"
+    },
+    {
+        "name": "Non-callable called",
+        "codeql_query": "Expressions/NonCallableCalled.ql"
+    },
+    {
+        "name": "Non-standard exception raised in special method",
+        "codeql_query": "Functions/IncorrectRaiseInSpecialMethod.ql"
+    },
+    {
+        "name": "NotImplemented is not an Exception",
+        "codeql_query": "Exceptions/NotImplementedIsNotAnException.ql"
+    },
+    {
+        "name": "Redundant assignment",
+        "codeql_query": "Statements/RedundantAssignment.ql"
+    },
+    {
+        "name": "Redundant comparison",
+        "codeql_query": "Expressions/Comparisons/UselessComparisonTest.ql"
+    },
+    {
+        "name": "Should use a 'with' statement",
+        "codeql_query": "Statements/ShouldUseWithStatement.ql"
+    },
+    {
+        "name": "Signature mismatch in overriding method",
+        "codeql_query": "Functions/SignatureOverriddenMethod.ql"
+    },
+    {
+        "name": "Special method has incorrect signature",
+        "codeql_query": "Functions/SignatureSpecialMethods.ql "
+    },
+    {
+        "name": "Suspicious unused loop iteration variable",
+        "codeql_query": "Variables/SuspiciousUnusedLoopIterationVariable.ql"
+    },
+    {
+        "name": "Testing equality to None",
+        "codeql_query": "Expressions/EqualsNone.ql"
+    },
+    {
+        "name": "Unguarded next in generator",
+        "codeql_query": "Exceptions/UnguardedNextInGenerator.ql"
+    },
+    {
+        "name": "Unnecessary 'else' clause in loop",
+        "codeql_query": "Statements/UnnecessaryElseClause.ql"
+    },
+    {
+        "name": "Unnecessary delete statement in function",
+        "codeql_query": "Statements/UnnecessaryDelete.ql"
+    },
+    {
+        "name": "Unnecessary pass",
+        "codeql_query": "Statements/UnnecessaryPass.ql"
+    },
+    {
+        "name": "Unreachable code",
+        "codeql_query": "Statements/UnreachableCode.ql "
+    },
+    {
+        "name": "Unused import",
+        "codeql_query": "Imports/UnusedImport.ql"
+    },
+    {
+        "name": "Unused local variable",
+        "codeql_query": "Variables/UnusedLocalVariable.ql"
+    },
+    {
+        "name": "Use of 'global' at module level",
+        "codeql_query": "Variables/GlobalAtModuleLevel.ql"
+    },
+    {
+        "name": "Use of the return value of a procedure",
+        "codeql_query": "Functions/UseImplicitNoneReturnValue.ql"
+    },
+    {
+        "name": "Variable defined multiple times",
+        "codeql_query": "Variables/MultiplyDefined.ql"
+    },
+    {
+        "name": "Wrong number of arguments in a call",
+        "codeql_query": "Expressions/WrongNumberArgumentsInCall.ql"
+    },
+    {
+        "name": "Wrong number of arguments in a class instantiation",
+        "codeql_query": "Classes/WrongNumberArgumentsInClassInstantiation.ql"
+    },
+    {
+        "name": "`__eq__` not overridden when adding attributes",
+        "codeql_query": "Classes/DefineEqualsWhenAddingAttributes.ql"
+    },
+    {
+        "name": "`__init__` method calls overridden method",
+        "codeql_query": "Classes/InitCallsSubclassMethod.ql"
+    },
+    {
+        "name": "`__iter__` method returns a non-iterator",
+        "codeql_query": "Functions/IterReturnsNonIterator.ql"
+    }
+]

@@ -1,0 +1,418 @@
+{
+    "'import *' may pollute namespace": {
+        "name": "'import *' may pollute namespace",
+        "ruleset": "CodeQL",
+        "desc": "When you import a module using from xxx import * all public names defined in the module are imported and bound in the local namespace of the import statement. The public names are determined by checking the __all__ variable for the module. If __all__ is not defined then all names within the module that do not start with an underscore character are imported. This pollutes the current namespace with names that are not part of the public API for the module.",
+        "recm": "A. Explicitly import the values required. \nB. Inside the imported module, define \u2018__all__\u2019 to restrict names being imported.\n",
+        "folder_name": "'import_'_may_pollute_namespace",
+        "contextual": false
+    },
+    "An assert statement has a side-effect": {
+        "name": "An assert statement has a side-effect",
+        "ruleset": "CodeQL",
+        "desc": "All code defined in assert statements is ignored when optimization is requested, that is, the program is run with the -O flag. If an assert statement has any side-effects then the behavior of the program changes when optimization is requested.",
+        "recm": "A. Move the code with side effect out of the assert statement.\n",
+        "folder_name": "An_assert_statement_has_a_side-effect",
+        "contextual": false
+    },
+    "Comparison of constants": {
+        "name": "Comparison of constants",
+        "ruleset": "CodeQL",
+        "desc": "When two constants are compared it is typically an indication of a mistake, since the Boolean value of the comparison will always be the same. In very old code this may be used to initialize True and False.",
+        "recm": "A. Replace the comparison of constants with either \u2018True\u2019 or \u2018False\u2019 \nB. Move the code block out of the conditional branch where the comparison of constants is the sole condition and delete the conditional.\n",
+        "folder_name": "Comparison_of_constants",
+        "contextual": false
+    },
+    "Comparison of identical values": {
+        "name": "Comparison of identical values",
+        "ruleset": "CodeQL",
+        "desc": "When two identical expressions are compared it is typically an indication of a mistake, since the Boolean value of the comparison will always be the same, unless the value is the floating point value float('nan').",
+        "recm": "A. If using equality checking to check if a value is float(\u2018nan\u2019), replace with the appropriate method such as math.isnan() or cmath.isnan() instead. \nB. If the above is not the case, simplify the conditional with a Boolean value that maintains semantics.\n",
+        "folder_name": "Comparison_of_identical_values",
+        "contextual": false
+    },
+    "Comparison using is when operands support `__eq__`": {
+        "name": "Comparison using is when operands support `__eq__`",
+        "ruleset": "CodeQL",
+        "desc": "When you compare two values using the is or is not operator, it is the object identities of the two values that is tested rather than their equality. If the class of either of the values in the comparison redefines equality then the is operator may return False even though the objects compare as equal. Equality is defined by the __eq__ or, in Python2, __cmp__ method. To compare two objects for equality, use the == or != operator instead.",
+        "recm": "A. When you want to compare the value of two literals, use the comparison operator == or != in place of is or is not. \nB. Remove or modify definition of __eq__. \nC. Use objects of a class that do not implement __eq__ in condition.\n",
+        "folder_name": "Comparison_using_is_when_operands_support___eq__",
+        "contextual": true
+    },
+    "Conflicting attributes in base classes": {
+        "name": "Conflicting attributes in base classes",
+        "ruleset": "CodeQL",
+        "desc": "When a class subclasses multiple base classes, attribute lookup is performed from left to right amongst the base classes. This form of attribute lookup is called \u201cmethod resolution order\u201d and is a solution to the diamond inheritance problem where several base classes override a method in a shared superclass.\n\nUnfortunately, this means that if more than one base class defines the same attribute, the leftmost base class will effectively override the attribute of the rightmost base class, even though the leftmost base class is not a subclass of the rightmost base class. Unless the methods in question are designed for inheritance, using super, then this implicit overriding may not be the desired behavior. Even if it is the desired behavior it makes the code hard to understand and maintain.",
+        "recm": "A. Override the attribute in the subclass to explicitly specify the correct behavior. \nB. Modify the class hierarchy and move equivalent or redundant methods to a common super class. \nC. Rename the conflicting attribute in one of the base classes. \nD. Modify the method hierarchy, breaking up complex methods into constituent parts. \nE. Use delegation rather than inheritance.\n",
+        "folder_name": "Conflicting_attributes_in_base_classes",
+        "contextual": true
+    },
+    "Constant in conditional expression or statement": {
+        "name": "Constant in conditional expression or statement",
+        "ruleset": "CodeQL",
+        "desc": "Using a constant value as a test in a conditional statement renders the statement pointless as only one branch will be run regardless of any other factors.",
+        "recm": "A. Remove condition and either delete or unindent code associated with the condition depending on whether it evaluates to True or False. \nB. Use (true) variables instead of constants in the conditional statement.\n",
+        "folder_name": "Constant_in_conditional_expression_or_statement",
+        "contextual": false
+    },
+    "Deprecated slice method": {
+        "name": "Deprecated slice method",
+        "ruleset": "CodeQL",
+        "desc": "The __getslice__, __setslice__ and __delslice__ methods have been deprecated since Python 2.0. In general, no class should implement these methods.\n\nThe only exceptions to this rule are classes that inherit from list and override __getitem__, __setitem__ or __delitem__. Since list implements the slicing methods any class inheriting from list must implement the the slicing methods to ensure correct behavior of __getitem__, __setitem__ and __delitem__. These exceptions to the rule will not be treated as violations.",
+        "recm": "A. If class inherits from list, replace ___getslice___, ___setslice___, ___delsclice___ methods with __getitem___, __setitem__, __delitem___ \nB. If class does not inherit from list, remove ___getslice___, ___setslice___, ___delsclice___ methods.\n",
+        "folder_name": "Deprecated_slice_method",
+        "contextual": false
+    },
+    "Duplicate key in dict literal": {
+        "name": "Duplicate key in dict literal",
+        "ruleset": "CodeQL",
+        "desc": "Dictionary literals are constructed in the order given in the source. This means that if a key is duplicated the second key-value pair will overwrite the first as a dictionary can only have one value per key.",
+        "recm": "A. Remove one of the duplicate keys \nB. Rename one of the duplicate keys\n",
+        "folder_name": "Duplicate_key_in_dict_literal",
+        "contextual": false
+    },
+    "Except block handles 'BaseException'": {
+        "name": "Except block handles 'BaseException'",
+        "ruleset": "CodeQL",
+        "desc": "All exception classes in Python derive from BaseException. BaseException has three important subclasses, Exception from which all errors and normal exceptions derive, KeyboardInterrupt which is raised when the user interrupts the program from the keyboard and SystemExit which is raised by the sys.exit() function to terminate the program.\n\nSince KeyboardInterrupt and SystemExit are special they should not be grouped together with other Exception classes.\n\nCatching BaseException, rather than its subclasses may prevent proper handling of KeyboardInterrupt or SystemExit. It is easy to catch BaseException accidentally as it is caught implicitly by an empty except: statement.",
+        "recm": "A. Handle Exception, KeyboardInterrupt and SystemExit separately.\n",
+        "folder_name": "Except_block_handles_'BaseException'",
+        "contextual": false
+    },
+    "First argument to super() is not enclosing class": {
+        "name": "First argument to super() is not enclosing class",
+        "ruleset": "CodeQL",
+        "desc": "The super class should be called with the enclosing class as its first argument and self as its second argument.\n\nPassing a different class may work correctly, provided the class passed is a super class of the enclosing class and the enclosing class does not define an __init__ method. However, this may result in incorrect object initialization if the enclosing class is later subclassed using multiple inheritance.",
+        "recm": "A. Ensure that the first argument to super() is the enclosing class.\n",
+        "folder_name": "First_argument_to_super()_is_not_enclosing_class",
+        "contextual": false
+    },
+    "First parameter of a method is not named 'self'": {
+        "name": "First parameter of a method is not named 'self'",
+        "ruleset": "CodeQL",
+        "desc": "Normal methods should have at least one parameter and the first parameter should be called self. This makes the purpose of the parameter clear to other developers.",
+        "recm": "A. If there is at least one parameter change the first parameter along with all its usages in the method body to \u2018self\u2019. \nB. Mark the method as a \u2018staticmethod\u2019. \nC. Refactor the method out of the class into a normal function. \nD. Add `self` as the first parameter and use `self.` before any fields/methods belonging to the enclosing class within the method body.\n",
+        "folder_name": "First_parameter_of_a_method_is_not_named_'self'",
+        "contextual": false
+    },
+    "Flask app is run in debug mode": {
+        "name": "Flask app is run in debug mode",
+        "ruleset": "CodeQL",
+        "desc": "Running a Flask application with debug mode enabled may allow an attacker to gain access through the Werkzeug debugger.",
+        "recm": "A. Disable debugging while running flash app.\n",
+        "folder_name": "Flask_app_is_run_in_debug_mode",
+        "contextual": false
+    },
+    "Illegal raise": {
+        "name": "Illegal raise",
+        "ruleset": "CodeQL",
+        "desc": "If the object raised is not a legal Exception class or an instance of one, then a TypeError will be raised instead.\n\nLegal exception classes are:\n1) Any old-style classes (Python 2 only)\n2) Any subclass of the builtin class BaseException However, it recommended that you only use subclasses of the builtin class Exception (which is itself a subclass of BaseException).",
+        "recm": "A. Change the expression in the \u2018raise\u2019 statement to be a legal exception.\n",
+        "folder_name": "Illegal_raise",
+        "contextual": false
+    },
+    "Implicit string concatenation in a list": {
+        "name": "Implicit string concatenation in a list",
+        "ruleset": "CodeQL",
+        "desc": "When two string literals abut each other the Python interpreter implicitly concatenates them into a single string. On occasion this can be useful, but is more commonly misleading or incorrect.",
+        "recm": "A. Make the concatenation explicit by adding \u2018+\u2019 between the string literals. \nB. Add a comma separator between the string literals to ensure that that are not concatenated.\n",
+        "folder_name": "Implicit_string_concatenation_in_a_list",
+        "contextual": false
+    },
+    "Import of deprecated module": {
+        "name": "Import of deprecated module",
+        "ruleset": "CodeQL",
+        "desc": "A module is deprecated when it cannot or will not be maintained indefinitely in the standard library. Deprecated modules may not receive security fixes or other important updates. See PEP 4 for a list of all deprecated modules.",
+        "recm": "A. Refactor the use of the deprecated module with an equivalent (non-deprecated) module throughout the file without changing the original code semantics.\n",
+        "folder_name": "Import_of_deprecated_module",
+        "contextual": false
+    },
+    "Imprecise assert": {
+        "name": "Imprecise assert",
+        "ruleset": "CodeQL",
+        "desc": "The class unittest.TestCase provides a range of assertion methods. As well as the general forms assertTrue() and assertFalse() more specific forms such as assertGreaterEquals() and assertNotIn() are provided. By using the more specific forms it is possible to get more precise and informative failure messages in the event of a test failing. This can speed up the debugging process.",
+        "recm": "A. Replace calls to assertTrue() and assertFalse() that do not provide a custom failure message with a more specific variant. \nB. Provide a tailored failure message using the assertTrue(condition, message) form.\n",
+        "folder_name": "Imprecise_assert",
+        "contextual": false
+    },
+    "Incomplete URL substring sanitization": {
+        "name": "Incomplete URL substring sanitization",
+        "ruleset": "CodeQL",
+        "desc": "Sanitizing untrusted URLs is a common technique for preventing attacks such as request forgeries and malicious redirections. Usually, this is done by checking that the host of a URL is in a set of allowed hosts.\n\nHowever, treating the URL as a string and checking if one of the allowed hosts is a substring of the URL is very prone to errors. Malicious URLs can bypass such security checks by embedding one of the allowed hosts in an unexpected location.\n\nEven if the substring check is not used in a security-critical context, the incomplete check may still cause undesirable behaviors when the check succeeds accidentally.",
+        "recm": "A. Use an allowlist or full string match \nB. Parse the URL and check hostname or other parts with full string match or substring match with correct including of dot.\n",
+        "folder_name": "Incomplete_URL_substring_sanitization",
+        "contextual": false
+    },
+    "Incomplete ordering": {
+        "name": "Incomplete ordering",
+        "ruleset": "CodeQL",
+        "desc": "A class that implements an ordering operator (__lt__, __gt__, __le__ or __ge__) should implement all four in order that ordering between two objects is consistent and obeys the usual mathematical rules. If the ordering is inconsistent with default equality, then __eq__ and __ne__ should also be implemented.",
+        "recm": "A. Implement all ordering operators __lt__, __gt__, __le__ and __ge__.\n",
+        "folder_name": "Incomplete_ordering",
+        "contextual": true
+    },
+    "Inconsistent equality and hashing": {
+        "name": "Inconsistent equality and hashing",
+        "ruleset": "CodeQL",
+        "desc": "In order to conform to the object model, classes that define their own equality method should also define their own hash method, or be unhashable. If the hash method is not defined then the hash of the super class is used. This is unlikely to result in the expected behavior.\n\nA class can be made unhashable by setting its __hash__ attribute to None.\n\nIn Python 3, if you define a class-level equality method and omit a __hash__ method then the class is automatically marked as unhashable.",
+        "recm": "A. Implement the unimplemented __hash__/__eq__ method. \nB. Set __hash__ attribute to None for the class.\n",
+        "folder_name": "Inconsistent_equality_and_hashing",
+        "contextual": true
+    },
+    "Insecure temporary file": {
+        "name": "Insecure temporary file",
+        "ruleset": "CodeQL",
+        "desc": "Functions that create temporary file names (such as tempfile.mktemp and os.tempnam) are fundamentally insecure, as they do not ensure exclusive access to a file with the temporary name they return. The file name returned by these functions is guaranteed to be unique on creation but the file must be opened in a separate operation. There is no guarantee that the creation and open operations will happen atomically. This provides an opportunity for an attacker to interfere with the file before it is opened.\n\nNote that mktemp has been deprecated since Python 2.3.",
+        "recm": "A. Use TemporaryFile or NamedTemporaryFile instead of tempfile\n",
+        "folder_name": "Insecure_temporary_file",
+        "contextual": false
+    },
+    "Missing call to `__init__` during object initialization": {
+        "name": "Missing call to `__init__` during object initialization",
+        "ruleset": "CodeQL",
+        "desc": "Python, unlike statically typed languages such as Java, allows complete freedom when calling methods during object initialization. However, standard object-oriented principles apply to Python classes using deep inheritance hierarchies. Therefore the developer has responsibility for ensuring that objects are properly initialized when there are multiple __init__ methods that need to be called.\n\nIf the __init__ method of a superclass is not called during object initialization it is likely that that object will end up in an incorrect state.\n\nA call to the __init__ method of a superclass during object initialization may be omitted:\n- When a subclass calls the __init__ method of the wrong class.\n- When a call to the __init__ method of one its base classes is omitted.\n- When multiple inheritance is used and a class inherits from several base classes, and at least one of those does not use super() in its own __init__ method.",
+        "recm": "A.  Explicitly call the __init__ of the correct base class. \nB. Use super() throughout the inheritance hierarchy. \nC. Refactor one or more of the classes to use composition rather than inheritance.\n",
+        "folder_name": "Missing_call_to___init___during_object_initialization",
+        "contextual": true
+    },
+    "Modification of dictionary returned by locals()": {
+        "name": "Modification of dictionary returned by locals()",
+        "ruleset": "CodeQL",
+        "desc": "The dictionary returned by locals() is not a view of the function's locals, but a copy. Therefore, modification of the dictionary returned from locals() will not modify the local variables of the function.",
+        "recm": "A. Modify the local variable directly. \nB. If the modified dictionary is being used later, create a new dictionary with relevant keys and use that instead.\n",
+        "folder_name": "Modification_of_dictionary_returned_by_locals()",
+        "contextual": false
+    },
+    "Modification of parameter with default": {
+        "name": "Modification of parameter with default",
+        "ruleset": "CodeQL",
+        "desc": "The default value of a parameter is computed once when the function is created, not for every invocation. The \u201cpre-computed\u201d value is then used for every subsequent call to the function. Consequently, if you modify the default value for a parameter this \u201cmodified\u201d default value is used for the parameter in future calls to the function. This means that the function may not behave as expected in future calls and also makes the function more difficult to understand.",
+        "recm": "A. Use a placeholder value such as None instead of a mutable. In the function body check to see if the parameter is the placeholder value and then initialize the mutable.\n",
+        "folder_name": "Modification_of_parameter_with_default",
+        "contextual": false
+    },
+    "Module is imported more than once": {
+        "name": "Module is imported more than once",
+        "ruleset": "CodeQL",
+        "desc": "Importing the same module more than once has no effect as each module is only loaded once. It also confuses readers of the code.",
+        "recm": "A. Remove one of the imports.\n",
+        "folder_name": "Module_is_imported_more_than_once",
+        "contextual": false
+    },
+    "Module is imported with 'import' and 'import from'": {
+        "name": "Module is imported with 'import' and 'import from'",
+        "ruleset": "CodeQL",
+        "desc": "Importing a module twice using the import xxx and from xxx import yyy is confusing.",
+        "recm": "A. Replace the \u2018from xxx import yyy\u2019 statement with \u2018yyy == xxx.yyy\u2019.  \nB. Remove the \u2018from xxx import yyy\u2019 and replace \u2018yyy\u2019 with \u2018xxx.yyy\u2019 throughout the file. \nC. Remove the \u2018import xxx\u2019 statement if the file uses only \u2018xxx.yyy\u2019.\n",
+        "folder_name": "Module_is_imported_with_'import'_and_'import_from'",
+        "contextual": false
+    },
+    "Nested loops with same variable": {
+        "name": "Nested loops with same variable",
+        "ruleset": "CodeQL",
+        "desc": "In Python variables have function-wide scope which means that if two variables have the same name in the same scope, they are in fact one variable. Consequently, nested loops in which the target variables have the same name in fact share a single variable. Such loops are difficult to understand as the inner loop will modify the target variable of the outer loop; this may be a typographical error.",
+        "recm": "A. Rename one of the two loop variables along with its usages.\n",
+        "folder_name": "Nested_loops_with_same_variable",
+        "contextual": false
+    },
+    "Non-callable called": {
+        "name": "Non-callable called",
+        "ruleset": "CodeQL",
+        "desc": "If an object is called, obj(), then that object must be a callable or a TypeError will be raised. A callable object is any object whose class defines the __call__ special method. Callable objects include functions, methods, classes.\n\nThe callable(object) builtin function determines if an object is callable or not.\n\nWhen the Python interpreter attempts to evaluate a call such as func(arg) it will invoke the __call__ special method on func. Thus, func(arg) is roughly equivalent to type(func).__call__(func, arg) which means that the class must define the attribute __call__, merely adding it to the instance is not sufficient.",
+        "recm": "A. Remove call to non-callable. \nB. Implement __call__ in the class of the object being called.\n",
+        "folder_name": "Non-callable_called",
+        "contextual": true
+    },
+    "Non-standard exception raised in special method": {
+        "name": "Non-standard exception raised in special method",
+        "ruleset": "CodeQL",
+        "desc": "User-defined classes interact with the Python virtual machine via special methods (also called \u201cmagic methods\u201d). For example, for a class to support addition it must implement the __add__ and __radd__ special methods. When the expression a + b is evaluated the Python virtual machine will call type(a).__add__(a, b) and if that is not implemented it will call type(b).__radd__(b, a).\n\nSince the virtual machine calls these special methods for common expressions, users of the class will expect these operations to raise standard exceptions. For example, users would expect that the expression a.b might raise an AttributeError if the object a does not have an attribute b. If a KeyError were raised instead, then this would be unexpected and may break code that expected an AttributeError, but not a KeyError.\n\nTherefore, if a method is unable to perform the expected operation then its response should conform to the standard protocol, described below.\n- Attribute access, a.b: Raise AttributeError\n- Arithmetic operations, a + b: Do not raise an exception, return NotImplemented instead.\n- Indexing, a[b]: Raise KeyError.\n- Hashing, hash(a): Use __hash__ = None to indicate that an object is unhashable.\n- Equality methods, a != b: Never raise an exception, always return True or False.\n- Ordering comparison methods, a < b: Raise a TypeError if the objects cannot be ordered.\n- Most others: Ideally, do not implement the method at all, otherwise raise TypeError to indicate that the operation is unsupported.",
+        "recm": "A. For attribute access, raise AttributeError \nB. For arithmetic operations do not raise an exception, return NotImplemented instead. \nC. For indexing of the form \u2018a[b]\u2019 raise KeyError. \nD. For hashing set __hash__ = None to indicate that an object is unhashable. \nE. For equality method, never raise an exception, always return True or False. \nF. For ordering comparison methods, raise a TypeError if the objects cannot be ordered. \nG. In other cases raise TypeError to indicate that the operation is unsupported.\n",
+        "folder_name": "Non-standard_exception_raised_in_special_method",
+        "contextual": false
+    },
+    "NotImplemented is not an Exception": {
+        "name": "NotImplemented is not an Exception",
+        "ruleset": "CodeQL",
+        "desc": "NotImplemented is not an Exception, but is often mistakenly used in place of NotImplementedError. Executing raise NotImplemented or raise NotImplemented() will raise a TypeError. When raise NotImplemented is used to mark code that is genuinely never called, this mistake is benign. However, should it be called, then a TypeError will be raised rather than the expected NotImplemented, which might make debugging the issue difficult.\n\nThe correct use of NotImplemented is to implement binary operators. Code that is not intended to be called should raise NotImplementedError.",
+        "recm": "A. Replace \u2018NotImplemented\u2019 with \u2018NotImplementedError\u2019\n",
+        "folder_name": "NotImplemented_is_not_an_Exception",
+        "contextual": false
+    },
+    "Redundant assignment": {
+        "name": "Redundant assignment",
+        "ruleset": "CodeQL",
+        "desc": "Assigning a variable to itself is redundant and often an indication of a mistake in the code.",
+        "recm": "A. Remove the redundant assignment. \nB. Change either the LHS or RHS of the assignment statement.\n",
+        "folder_name": "Redundant_assignment",
+        "contextual": false
+    },
+    "Redundant comparison": {
+        "name": "Redundant comparison",
+        "ruleset": "CodeQL",
+        "desc": "The result of certain comparisons can sometimes be inferred from their context and the results of other comparisons. This can be an indication of faulty logic and may result in dead code or infinite loops if, for example, a loop condition never changes its value.",
+        "recm": "A. Remove the redundant comparison statement and move/remove associated code block if the comparison part of a condition. \nB. Modify the comparison to make it non-redudnant.\n",
+        "folder_name": "Redundant_comparison",
+        "contextual": false
+    },
+    "Should use a 'with' statement": {
+        "name": "Should use a 'with' statement",
+        "ruleset": "CodeQL",
+        "desc": "The with statement was introduced by PEP343 to allow standard uses of try-finally statements to be factored out. Using this simplification makes code easier to read.",
+        "recm": "A. Replace the \u2018try-finally\u2019 where the finally block is only closing a resource with a \u2018with\u2019 statement. \nB. Remove the try\n",
+        "folder_name": "Should_use_a_'with'_statement",
+        "contextual": false
+    },
+    "Signature mismatch in overriding method": {
+        "name": "Signature mismatch in overriding method",
+        "ruleset": "CodeQL",
+        "desc": "There are one (or more) legal parameters for an overridden method that are not legal for an overriding method. This will cause an error when the overriding method is called with a number of parameters that is legal for the overridden method. This violates the Liskov substitution principle.",
+        "recm": "A. Modify the overriding method to support all arguments from the overridden method. \nB. Modify the overridden method to only accept a subset of arguments or the same arguments used in the overriding method.\n",
+        "folder_name": "Signature_mismatch_in_overriding_method",
+        "contextual": true
+    },
+    "Special method has incorrect signature": {
+        "name": "Special method has incorrect signature",
+        "ruleset": "CodeQL",
+        "desc": "Special methods (sometimes also called magic methods) are how user defined classes interact with the Python virtual machine. For example, for a class to support addition it must implement the __add__ and __radd__ special methods. When the expression a + b is evaluated the Python virtual machine will call type(a).__add__(a, b) and if that is not implemented it will call type(b).__radd__(b, a).\n\nSince these special methods are always called by the virtual machine with a fixed number of parameters, if the method is implemented with a different number of parameters it will fail at runtime with a TypeError.",
+        "recm": "A. Ensure method has the correct number of parameters. \nB. Rename the method to something that is not a special method name.\n",
+        "folder_name": "Special_method_has_incorrect_signature",
+        "contextual": false
+    },
+    "Suspicious unused loop iteration variable": {
+        "name": "Suspicious unused loop iteration variable",
+        "ruleset": "CodeQL",
+        "desc": "A for loop iteration variable is not used in the body of the loop, and the loop does not count the number of items in the sequence. This is suspicious as there is rarely any reason to iterate over a sequence and not use the contents. Not using the loop variable can often indicate a logical error or typo.",
+        "recm": "A. Use the loop variable for some computation in the loop body. \nB. Indicate that the loop variable is unused by renaming it to start with either _ or unused. \nC. Use another flavor of loop that does not involve a loop variable.\n",
+        "folder_name": "Suspicious_unused_loop_iteration_variable",
+        "contextual": false
+    },
+    "Testing equality to None": {
+        "name": "Testing equality to None",
+        "ruleset": "CodeQL",
+        "desc": "When you compare an object to None, use is rather than ==. None is a singleton object, comparing using == invokes the __eq__ method on the object in question, which may be slower than identity comparison. Comparing to None using the is operator is also easier for other programmers to read.",
+        "recm": "A. Replace \u2018==\u2019 with \u2018is\u2019\n",
+        "folder_name": "Testing_equality_to_None",
+        "contextual": false
+    },
+    "Unguarded next in generator": {
+        "name": "Unguarded next in generator",
+        "ruleset": "CodeQL",
+        "desc": "The function next() will raise a StopIteration exception if the underlying iterator is exhausted. Normally this is fine, but in a generator may cause problems. Since the StopIteration is an exception it will be propagated out of the generator causing termination of the generator. This is unlikely to be the expected behavior and may mask errors.\n\nThis problem is considered sufficiently serious that PEP 479 has been accepted to modify the handling of StopIteration in generators. Consequently, code that does not handle StopIteration properly is likely to fail in future versions of Python.",
+        "recm": "A. Wrap call to next() in try-except to explicitly handle StopIteration exceptions. \n",
+        "folder_name": "Unguarded_next_in_generator",
+        "contextual": false
+    },
+    "Unnecessary 'else' clause in loop": {
+        "name": "Unnecessary 'else' clause in loop",
+        "ruleset": "CodeQL",
+        "desc": "The else clause of a loop (either a for or a while statement) executes immediately after the loop terminates normally. If there is a break statement in the loop body, then the else clause is skipped. If there is no break statement, then the else clause will always be executed after the loop, unless it exits with a return or raise. Therefore, if there is no break statement in the loop body then the else clause can be replaced with unindented code.\n\nGenerally the use of else clauses should be avoided where possible, as they are likely to be misunderstood.",
+        "recm": "A. Replace else clause with unindented code. \nB. Add a break statement inside the loop body.\n",
+        "folder_name": "Unnecessary_'else'_clause_in_loop",
+        "contextual": false
+    },
+    "Unnecessary delete statement in function": {
+        "name": "Unnecessary delete statement in function",
+        "ruleset": "CodeQL",
+        "desc": "Passing a local variable to a del statement results in that variable being removed from the local namespace. When exiting a function all local variables are deleted, so it is unnecessary to explicitly delete variables in such cases.",
+        "recm": "A. Remove delete statement. \nB. Modify function body so that variable being deleted is not local.\n",
+        "folder_name": "Unnecessary_delete_statement_in_function",
+        "contextual": false
+    },
+    "Unnecessary pass": {
+        "name": "Unnecessary pass",
+        "ruleset": "CodeQL",
+        "desc": "A pass statement is only necessary when it is the only statement in a block (the list of statements forming part of a compound statement). This is because the purpose of the pass statement is to allow empty blocks where they would otherwise be syntactically invalid. If the block already contains other statements then the pass statement is unnecessary.",
+        "recm": "A. Remove the `pass` statement. \nB. Remove the other statements in the block apart from the \u2018pass\u2019 statement.\n",
+        "folder_name": "Unnecessary_pass",
+        "contextual": false
+    },
+    "Unreachable code": {
+        "name": "Unreachable code",
+        "ruleset": "CodeQL",
+        "desc": "Unreachable code makes the code more difficult to understand and may slow down loading of modules.",
+        "recm": "A. Remove the unreachable code. \nB. Make the code reachable while not affecting existing logic.\n",
+        "folder_name": "Unreachable_code",
+        "contextual": false
+    },
+    "Unused import": {
+        "name": "Unused import",
+        "ruleset": "CodeQL",
+        "desc": "A module is imported (using the import statement) but that module is never used. This creates a dependency that does not need to exist and makes the code more difficult to read.",
+        "recm": "A. Delete the flagged import statement.\n",
+        "folder_name": "Unused_import",
+        "contextual": false
+    },
+    "Unused local variable": {
+        "name": "Unused local variable",
+        "ruleset": "CodeQL",
+        "desc": "A local variable is defined (by an assignment) but never used.\n\nIt is sometimes necessary to have a variable which is not used. These unused variables should have distinctive names, to make it clear to readers of the code that they are deliberately not used. The most common conventions for indicating this are to name the variable _ or to start the name of the variable with unused or _unused.\n\nThe query accepts the following names for variables that are intended to be unused:\n- Any name consisting entirely of underscores.\n- Any name containing unused.\n- The names dummy or empty.\n- Any \u201cspecial\u201d name of the form __xxx__. Variables that are defined in a group, for example x, y = func() are handled collectively. If they are all unused, then this is reported. Otherwise they are all treated as used.",
+        "recm": "A. Remove the instance of the unused variable (without causing side effects). \nB. Indicate that the variable is unused by renaming it to start with either _ or unused.\n",
+        "folder_name": "Unused_local_variable",
+        "contextual": false
+    },
+    "Use of 'global' at module level": {
+        "name": "Use of 'global' at module level",
+        "ruleset": "CodeQL",
+        "desc": "The global statement is used to specify that assignments to that name are assignments to the variable in the global (module) scope, rather than in the local scope. At the module level, this statement is redundant because the local scope and global scope are the same.",
+        "recm": "A. Remove the \u2018global\u2019 statement.\n",
+        "folder_name": "Use_of_'global'_at_module_level",
+        "contextual": false
+    },
+    "Use of the return value of a procedure": {
+        "name": "Use of the return value of a procedure",
+        "ruleset": "CodeQL",
+        "desc": "All functions in Python return a value. If a function has no return statements or none of the return statements return a value then the function will return None. However, this value has no meaning and should be ignored.\n\nUsing the return value of such a 'procedure' is confusing to the reader as it suggests that the value is significant.",
+        "recm": "A. Do not use the return value of a procedure; replace x = proc() with proc() and replace any use of the value with None or some other suitable value.\n",
+        "folder_name": "Use_of_the_return_value_of_a_procedure",
+        "contextual": true
+    },
+    "Variable defined multiple times": {
+        "name": "Variable defined multiple times",
+        "ruleset": "CodeQL",
+        "desc": "Multiple assignments to a single variable without an intervening usage makes the first assignment redundant. Its value is lost.",
+        "recm": "\nA. Remove one of the assignments (keeping the RHS if it has side effects). \nB. Rename one of the variables.\n",
+        "folder_name": "Variable_defined_multiple_times",
+        "contextual": false
+    },
+    "Wrong number of arguments in a call": {
+        "name": "Wrong number of arguments in a call",
+        "ruleset": "CodeQL",
+        "desc": "A function call must supply an argument for each parameter that does not have a default value defined, so:\n- The minimum number of arguments is the number of parameters without default values.\n- The maximum number of arguments is the total number of parameters, unless the function takes a varargs (starred) parameter in which case there is no limit.",
+        "recm": "A. If there are too few arguments then check to see which arguments have been omitted and supply values for those. \nB. If there are too many arguments then check to see if any have been added by mistake and remove those. \nC. Refactor the function being called to take in the arguments in the call while maintaining the intended semantics.\n",
+        "folder_name": "Wrong_number_of_arguments_in_a_call",
+        "contextual": true
+    },
+    "Wrong number of arguments in a class instantiation": {
+        "name": "Wrong number of arguments in a class instantiation",
+        "ruleset": "CodeQL",
+        "desc": "A call to the __init__ method of a class must supply an argument for each parameter that does not have a default value defined, so:\n- The minimum number of arguments is the number of parameters without default values.\n- The maximum number of arguments is the total number of parameters, unless the class __init__ method takes a varargs (starred) parameter in which case there is no limit.",
+        "recm": "A. If there are too few arguments then check to see which arguments have been omitted and supply values for those. \nB. If there are too many arguments then check to see if any have been added by mistake and remove those. \nC. Refactor the constructor to take in the arguments in the call.\n",
+        "folder_name": "Wrong_number_of_arguments_in_a_class_instantiation",
+        "contextual": true
+    },
+    "`__eq__` not overridden when adding attributes": {
+        "name": "`__eq__` not overridden when adding attributes",
+        "ruleset": "CodeQL",
+        "desc": "A class that defines attributes that are not present in its superclasses may need to override the __eq__() method (__ne__() should also be defined).\n\nAdding additional attributes without overriding __eq__() means that the additional attributes will not be accounted for in equality tests.",
+        "recm": "A. Override __eq__ method to also test for equality of added attributes by either calling eq on the base class and checking equality of the added attributes, or implementing a new eq method that checks equality on both self and inherited attributes.\n",
+        "folder_name": "__eq___not_overridden_when_adding_attributes",
+        "contextual": true
+    },
+    "`__init__` method calls overridden method": {
+        "name": "`__init__` method calls overridden method",
+        "ruleset": "CodeQL",
+        "desc": "When an instance of a class is initialized, the super-class state should be fully initialized before it becomes visible to the subclass. Calling methods of the subclass in the superclass' __init__ method violates this important invariant.",
+        "recm": "A. Rename subclass and superclass methods so to avoid overriding methods being called in the superclass constructor. \nB. Use composition instead of inheritance. \nC. Use static method for object creation. \nD. Refactor the initialization logic into __init__ methods of the superclass and subclass and remove call to the overridden method.\n",
+        "folder_name": "__init___method_calls_overridden_method",
+        "contextual": true
+    },
+    "`__iter__` method returns a non-iterator": {
+        "name": "`__iter__` method returns a non-iterator",
+        "ruleset": "CodeQL",
+        "desc": "The __iter__ method of a class should always return an iterator.\n\nIterators must implement both __next__ and __iter__ for Python 3, or both next and __iter__ for Python 2. The __iter__ method of the iterator must return the iterator object itself.\n\nIteration in Python relies on this behavior and attempting to iterate over an instance of a class with an incorrect __iter__ method can raise a TypeError.",
+        "recm": "A. Modify __iter__ to return an iterator \nB. Modify the class of the object returned by __iter__ to implement both __next__ and __iter__. \nC. Rename __iter__ to something else and use this new function in place of where objects of the class were being iterated over.\n",
+        "folder_name": "__iter___method_returns_a_non-iterator",
+        "contextual": true
+    }
+}

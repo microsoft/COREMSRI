@@ -1,0 +1,32 @@
+We are fixing code that has been flagged for {{ Ruleset }} warning titled " {{ query_name }} " which has the following description:
+{{ description }}
+{% if recommendation %}
+
+The recommended way to fix code flagged for this warning is:
+{{ recommendation }}
+{% endif %}
+{% if relevant_code %}
+
+The following lines of code are related to the buggy code and can be used as contextual information to produce the fixed code:
+{{ relevant_code }}
+{% endif %}
+
+Modify the Buggy code below to fix the warning(s). Output the entire code block with appropriate changes. Do not remove any section of the code unrelated to the desired fix.
+
+Buggy Code:
+```{{ language }}
+{{ buggy_code }}
+```
+
+{% if error_message %}
+Warning(s) for the above buggy code:
+{% for msg in error_message %}{{ loop.index }}. `{{ msg }}`
+{% endfor %}
+{% endif %}
+
+The following lines are likely to be of interest:
+{% for as in answer_spans %}{{ loop.index }}. `{{ as }}`
+{% endfor %}
+
+Fixed Code:
+```{{ language }}
