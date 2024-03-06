@@ -1,4 +1,4 @@
-langchain==0.0.123
+langchain==0.1.11
 openai==1.10.0
 tree-sitter>=0.20.1
 tiktoken>=0.3.0
